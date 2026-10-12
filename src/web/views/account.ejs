@@ -1,0 +1,24 @@
+<%- include('partials/header') %>
+<section class="card card-narrow">
+  <h1>Смена пароля</h1>
+  <% if (error) { %><div class="flash flash-error" role="alert"><%= error %></div><% } %>
+  <% if (ok) { %><div class="flash flash-ok" role="status">Пароль изменён. На остальных устройствах вход сброшен.</div><% } %>
+  <form method="post" action="/account/password">
+    <input class="auth-hidden" type="text" name="username" value="<%= user.login %>" autocomplete="username" tabindex="-1" aria-hidden="true" readonly>
+    <label class="field">
+      <span>Текущий пароль</span>
+      <input type="password" name="current" autocomplete="current-password" required>
+    </label>
+    <label class="field">
+      <span>Новый пароль (не короче 8 символов)</span>
+      <input type="password" name="password" autocomplete="new-password" minlength="8" required>
+    </label>
+    <label class="field">
+      <span>Новый пароль ещё раз</span>
+      <input type="password" name="confirm" autocomplete="new-password" minlength="8" required>
+    </label>
+    <button class="btn btn-primary auth-submit" type="submit">Сменить пароль</button>
+  </form>
+  <p class="auth-hint"><a href="/">Вернуться на диск</a></p>
+</section>
+<%- include('partials/footer') %>

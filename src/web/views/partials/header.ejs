@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/static/style.css">
+  <% for (const href of locals.styles ?? []) { %><link rel="stylesheet" href="<%= href %>">
+  <% } %>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="/">Emotion</a>
+  <% if (user) { %>
+  <nav>
+    <a href="/drive">Диск</a>
+    <% if (user.isAdmin) { %><a href="/users">Команда</a><% } %>
+  </nav>
+  <form class="topbar-user" method="post" action="/logout">
+    <a href="/account/password" title="Сменить пароль"><%= user.name %></a>
+    <button class="btn btn-ghost" type="submit">Выйти</button>
+  </form>
+  <% } %>
+</header>
+<main class="page">

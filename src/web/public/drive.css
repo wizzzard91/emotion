@@ -1,0 +1,112 @@
+/* Shared disk page. */
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.js-only { display: none; }
+.js .js-only { display: inline; }
+
+.icon { width: 20px; height: 20px; flex: none; }
+.icon-folder { color: var(--accent); }
+.icon-file { color: var(--muted); }
+.icon-lock { width: 13px; height: 13px; }
+
+.crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 14px; font-size: 1.1rem; }
+.crumbs a, .crumb-current { overflow-wrap: anywhere; }
+.crumb-current { font-weight: 600; }
+.crumb-sep { color: var(--muted); }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 1px 7px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+/* Panels are anchored to the toolbar's left edge so they stay on screen on a phone. */
+.toolbar { position: relative; display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+.tool > summary, .row-menu > summary { list-style: none; user-select: none; }
+.tool > summary::-webkit-details-marker, .row-menu > summary::-webkit-details-marker { display: none; }
+.tool[open] > summary, .row-menu[open] > summary { filter: brightness(0.95); }
+.tool-panel {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 6px);
+  left: 0;
+  width: min(320px, 100%);
+  padding: 14px;
+  box-shadow: 0 6px 24px rgb(0 0 0 / 0.12);
+}
+.tool-panel input[type="file"] { width: 100%; font: inherit; color: var(--text); }
+.check { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; cursor: pointer; }
+
+.upload-status { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; color: var(--muted); }
+.upload-status[hidden] { display: none; }
+.upload-status progress { flex: 1; height: 8px; accent-color: var(--accent); }
+
+.drive-card { padding: 0; }
+.drive-table th:first-child, .drive-table td:first-child { padding-left: 16px; }
+.drive-table tbody tr:last-child td { border-bottom: 0; }
+.col-name { width: 100%; }
+.col-date { white-space: nowrap; }
+.col-actions { width: 1%; text-align: right; position: relative; }
+.entry { display: inline-flex; align-items: center; gap: 8px; color: var(--text); vertical-align: middle; }
+.entry-name { overflow-wrap: anywhere; }
+.col-name .badge { margin-left: 6px; vertical-align: middle; }
+
+.row-menu > summary { justify-content: center; min-width: 34px; font-weight: 700; }
+.row-menu-panel {
+  position: absolute;
+  z-index: 10;
+  right: 10px;
+  top: calc(100% - 4px);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  width: min(300px, calc(100vw - 32px));
+  padding: 12px;
+  text-align: left;
+  box-shadow: 0 6px 24px rgb(0 0 0 / 0.12);
+}
+.row-menu-panel form { margin: 0; display: flex; gap: 6px; }
+.row-menu-panel form .btn { flex: none; }
+.row-menu-panel form .menu-wide { flex: 1; justify-content: center; white-space: normal; }
+.row-menu-panel input[type="text"] { padding: 3px 8px; min-width: 0; }
+.menu-links { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.empty { text-align: center; padding: 48px 20px; }
+.empty-title { font-size: 1.1rem; margin: 0 0 4px; }
+.empty p:last-child { margin: 0; }
+
+.drop-hint { display: none; }
+.dragging .drop-hint {
+  display: flex;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  pointer-events: none;
+}
+.dragging .drop-hint > div {
+  padding: 28px 36px;
+  border: 2px dashed var(--accent);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--accent);
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .drive-table th, .drive-table td { padding: 10px 8px; }
+  .drive-table th:first-child, .drive-table td:first-child { padding-left: 12px; }
+  .row-menu > summary { min-width: 40px; padding: 6px 8px; }
+}

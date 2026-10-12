@@ -1,0 +1,76 @@
+<%- include('partials/header') %>
+<% if (error) { %><div class="flash flash-error" role="alert"><%= error %></div><% } %>
+<% if (notice) { %><div class="flash flash-ok" role="status"><%= notice %></div><% } %>
+
+<section class="card auth-section">
+  <div class="auth-heading">
+    <h1>Команда</h1>
+    <a href="/account/password">Сменить свой пароль</a>
+  </div>
+  <div class="auth-scroll">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Имя</th>
+          <th>Логин</th>
+          <th class="hide-mobile">Роль</th>
+          <th class="hide-mobile">Добавлен</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (const u of users) { %>
+        <tr>
+          <td><%= u.name %><% if (u.id === me.id) { %> <span class="muted">(вы)</span><% } %></td>
+          <td><%= u.login %></td>
+          <td class="hide-mobile"><%= u.isAdmin ? 'Администратор' : 'Участник' %></td>
+          <td class="hide-mobile"><%= u.created %></td>
+          <td class="auth-actions">
+            <details>
+              <summary class="btn btn-small">Новый пароль</summary>
+              <form class="auth-inline" method="post" action="/users/<%= u.id %>/password">
+                <input type="password" name="password" autocomplete="new-password" minlength="8" placeholder="Не короче 8 символов" aria-label="Новый пароль для <%= u.name %>" required>
+                <button class="btn btn-small btn-primary" type="submit">Задать</button>
+              </form>
+            </details>
+            <% if (u.id !== me.id) { %>
+            <details>
+              <summary class="btn btn-small btn-danger">Удалить</summary>
+              <form class="auth-inline" method="post" action="/users/<%= u.id %>/delete">
+                <span class="muted">Удалить <%= u.name %>?</span>
+                <button class="btn btn-small btn-danger" type="submit">Да, удалить</button>
+              </form>
+            </details>
+            <% } %>
+          </td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="card auth-section auth-add">
+  <h2>Добавить участника</h2>
+  <form method="post" action="/users">
+    <label class="field">
+      <span>Имя</span>
+      <input type="text" name="name" value="<%= form.name %>" maxlength="64" autocomplete="off" required>
+    </label>
+    <label class="field">
+      <span>Логин (латиница, цифры, точка, дефис, подчёркивание)</span>
+      <input type="text" name="login" value="<%= form.login %>" minlength="3" maxlength="32" pattern="[a-zA-Z0-9._\-]{3,32}" autocomplete="off" autocapitalize="none" spellcheck="false" required>
+    </label>
+    <label class="field">
+      <span>Пароль (не короче 8 символов)</span>
+      <input type="password" name="password" minlength="8" autocomplete="new-password" required>
+    </label>
+    <label class="auth-check">
+      <input type="checkbox" name="isAdmin" value="1"<%= form.isAdmin ? ' checked' : '' %>>
+      Администратор
+    </label>
+    <button class="btn btn-primary" type="submit">Добавить</button>
+  </form>
+  <p class="muted auth-hint">Пароль передайте участнику лично — он сменит его в разделе «Сменить свой пароль».</p>
+</section>
+<%- include('partials/footer') %>

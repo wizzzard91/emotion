@@ -1,0 +1,20 @@
+/* Login, password change and team pages. */
+.auth-submit { width: 100%; justify-content: center; }
+.auth-hint { margin: 14px 0 0; font-size: 0.87rem; }
+.auth-hidden { display: none; }
+
+.auth-section { margin-bottom: 16px; }
+.auth-add { max-width: 420px; }
+.auth-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+.auth-heading h1 { margin: 0; }
+.auth-scroll { overflow-x: auto; }
+
+.auth-actions { text-align: right; white-space: nowrap; }
+.auth-actions details { display: inline-block; vertical-align: top; text-align: left; }
+.auth-actions details[open] { display: block; margin: 4px 0; }
+.auth-actions summary { list-style: none; }
+.auth-actions summary::-webkit-details-marker { display: none; }
+.auth-inline { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+.auth-inline input[type="password"] { width: 190px; padding: 3px 8px; }
+
+.auth-check { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
