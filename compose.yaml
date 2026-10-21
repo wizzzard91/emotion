@@ -1,0 +1,24 @@
+# Runs Emotion on a single host. MongoDB and the S3 server are external and
+# configured through .env (see .env.example).
+#
+#   docker compose up -d --build
+#
+# Inside the container "localhost" is the container itself: point S3_ENDPOINT
+# at host.docker.internal (an S3 server on this host) or at a real address.
+services:
+  app:
+    build: .
+    image: emotion:latest
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      PORT: "3000"
+      # The published port is bound to localhost, so whatever reaches the container through
+      # Docker's private network is the reverse proxy on this host: trust its X-Forwarded-For.
+      TRUST_PROXY: ${TRUST_PROXY:-uniquelocal}
+    ports:
+      # Bound to localhost: put a reverse proxy with HTTPS (Caddy, nginx) in front.
+      # Use "3000:3000" instead to expose it directly, e.g. on a private network.
+      - "127.0.0.1:${HOST_PORT:-3000}:3000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

@@ -12,6 +12,7 @@ A simple self-hosted substitute for Notion, aimed at low-powered machines and sm
 - `pnpm test` — Jest unit tests, no external services (`pnpm jest src/server/drive` for one area, `pnpm jest -t "name"` for one test)
 - `MONGODB_TEST_URI=... pnpm jest src/server/db` — also runs the store contract against a real MongoDB (throwaway database)
 - `pnpm typecheck` — `tsc --noEmit`
+- `docker compose up -d --build` — production-like run from `Dockerfile` + `compose.yaml` (app only; MongoDB and S3 are external)
 
 There is no build step: Node runs the `.ts` sources directly via type stripping. That imposes rules:
 

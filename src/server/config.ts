@@ -21,6 +21,8 @@ export interface AdminSeed {
 
 export interface Config {
   port: number;
+  /** Express "trust proxy" setting: which hops may set X-Forwarded-For. */
+  trustProxy: boolean | number | string;
   cookieSecure: boolean;
   maxUploadBytes: number;
   mongo: MongoConfig;
@@ -30,6 +32,12 @@ export interface Config {
 
 const REQUIRED = ['MONGODB_URI', 'S3_ENDPOINT', 'S3_BUCKET', 'S3_ACCESS_KEY_ID', 'S3_SECRET_ACCESS_KEY'] as const;
 
+function parseTrustProxy(value: string | undefined): boolean | number | string {
+  if (!value) return 'loopback';
+  if (value === 'true' || value === 'false') return value === 'true';
+  return /^\d+$/.test(value) ? Number(value) : value;
+}
+
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
   const missing = REQUIRED.filter((name) => !env[name]);
   if (missing.length > 0) {
@@ -37,6 +45,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
   }
   return {
     port: Number(env.PORT ?? 3000),
+    trustProxy: parseTrustProxy(env.TRUST_PROXY),
     cookieSecure: env.COOKIE_SECURE === 'true',
     maxUploadBytes: Number(env.MAX_UPLOAD_MB ?? 2048) * 1024 * 1024,
     mongo: { uri: env.MONGODB_URI!, db: env.MONGODB_DB || 'emotion' },

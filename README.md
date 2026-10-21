@@ -30,6 +30,23 @@ A private folder is visible to its owner only; administrators cannot see it eith
 All settings are environment variables, see [.env.example](.env.example).
 In production, put the service behind a reverse proxy with HTTPS and set `COOKIE_SECURE=true`.
 
+## Deploying with Docker
+
+The image contains only the app; MongoDB and the S3 server stay external.
+
+```bash
+cp .env.example .env   # on the server; fill in the values
+docker compose up -d --build
+docker compose logs -f app
+```
+
+- The app listens on `127.0.0.1:3000` of the host (change it with `HOST_PORT`). Put a reverse proxy with HTTPS in front of it and set `COOKIE_SECURE=true`.
+- Inside the container `localhost` is the container itself. If the S3 server runs on the same host, use `S3_ENDPOINT=http://host.docker.internal:<port>`.
+- With MongoDB Atlas, add the server's IP to Network Access.
+- `GET /healthz` is a liveness probe; Docker uses it for the container health status.
+
+To update: `git pull && docker compose up -d --build`.
+
 ## Development
 
 ```bash

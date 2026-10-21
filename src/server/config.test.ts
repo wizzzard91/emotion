@@ -14,6 +14,15 @@ test('applies defaults', () => {
   expect(config.mongo.db).toBe('emotion');
   expect(config.s3.forcePathStyle).toBe(true);
   expect(config.admin).toBeNull();
+  expect(config.trustProxy).toBe('loopback');
+});
+
+test.each([
+  ['true', true],
+  ['1', 1],
+  ['172.16.0.0/12', '172.16.0.0/12'],
+])('parses TRUST_PROXY=%s', (value, expected) => {
+  expect(loadConfig({ ...env, TRUST_PROXY: value }).trustProxy).toBe(expected);
 });
 
 test('lists every missing required variable', () => {

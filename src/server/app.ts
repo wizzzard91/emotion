@@ -40,7 +40,7 @@ export function createApp(deps: AppDeps) {
   const app = express();
   app.set('view engine', 'ejs');
   app.set('views', VIEWS_DIR);
-  app.set('trust proxy', 'loopback');
+  app.set('trust proxy', deps.config.trustProxy);
   app.disable('x-powered-by');
 
   app.use((_req, res, next) => {
@@ -54,6 +54,8 @@ export function createApp(deps: AppDeps) {
     next();
   });
   app.use('/static', express.static(PUBLIC_DIR));
+  // Liveness probe for Docker and reverse proxies; deliberately touches neither the database nor sessions.
+  app.get('/healthz', (_req, res) => void res.type('text').send('ok'));
   app.use(sameOriginOnly);
   app.use(express.urlencoded({ extended: false }));
   app.use(loadUser(deps));
