@@ -15,6 +15,8 @@ test('applies defaults', () => {
   expect(config.s3.forcePathStyle).toBe(true);
   expect(config.admin).toBeNull();
   expect(config.trustProxy).toBe('loopback');
+  expect(config.host).toBeUndefined();
+  expect(loadConfig({ ...env, HOST: '127.0.0.1' }).host).toBe('127.0.0.1');
 });
 
 test.each([

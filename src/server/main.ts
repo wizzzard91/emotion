@@ -18,9 +18,9 @@ if ((await stores.users.countAdmins()) === 0) {
   console.warn('No administrator exists: set ADMIN_LOGIN and ADMIN_PASSWORD and restart to create one.');
 }
 
-const server = createApp({ stores, storage, config }).listen(config.port, () => {
-  console.log(`Emotion is listening on http://localhost:${config.port}`);
-});
+const app = createApp({ stores, storage, config });
+const onListening = () => console.log(`Emotion is listening on http://${config.host ?? 'localhost'}:${config.port}`);
+const server = config.host ? app.listen(config.port, config.host, onListening) : app.listen(config.port, onListening);
 // Large uploads over a slow link must not be cut off by a timeout.
 server.requestTimeout = 0;
 

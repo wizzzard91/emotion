@@ -21,6 +21,8 @@ export interface AdminSeed {
 
 export interface Config {
   port: number;
+  /** Address to listen on; undefined means all interfaces. */
+  host: string | undefined;
   /** Express "trust proxy" setting: which hops may set X-Forwarded-For. */
   trustProxy: boolean | number | string;
   cookieSecure: boolean;
@@ -45,6 +47,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
   }
   return {
     port: Number(env.PORT ?? 3000),
+    host: env.HOST || undefined,
     trustProxy: parseTrustProxy(env.TRUST_PROXY),
     cookieSecure: env.COOKIE_SECURE === 'true',
     maxUploadBytes: Number(env.MAX_UPLOAD_MB ?? 2048) * 1024 * 1024,
